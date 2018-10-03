@@ -3,6 +3,28 @@ import numpy as np
 
 MAX_KERNEL_LENGTH=11
 
+def concatenateDifSizes(images):
+    max_width = 0 # find the max width of all the images
+    total_height = 0 # the total height of the images (vertical stacking)
+
+    for i in range(len(images)):
+        # open all images and find their sizes
+        if images[-1].shape[1] > max_width:
+            max_width = images[-1].shape[1]
+        total_height += images[-1].shape[0]
+
+    # create a new array with a size large enough to contain all the images
+    final_image = np.zeros((total_height,max_width,3),dtype=np.uint8)
+
+    current_y = 0 # keep track of where your current image was last placed in the y coordinate
+    for image in images:
+        # add an image to the final array and increment the y coordinate
+        final_image[current_y:image.shape[0]+current_y,:image.shape[1],:] = image
+        current_y += image.shape[0]
+
+    cv2.imwrite('fin.PNG',final_image)
+    #pintaI(final_image)
+
 
 
 def concatenate(imagenes):
@@ -29,11 +51,7 @@ def pintaI(i):
     cv2.destroyAllWindows()
 
 #Gato
-img=leeimagen("cat.bmp",1)
-#Rosalia
-#img=leeimagen("img/rosalia.jpg",1)
-#perro
-#img=leeimagen("dog.bmp",1)
+img=leeimagen("data/cat.bmp",1)
 
 #Ejercicio 1
 #apartado a
@@ -85,14 +103,42 @@ def ej1C():
 
 
 #ej2
-imgAux=np.copy(img)
 
-while(True):
-    pintaI(imgAux)
-    cv2.pyrUp(imgAux,imgAux,dstsize=[1.5,1.5])
-    pintaI(imgAux)
+imgAux=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=cv2.BORDER_REFLECT)
+pintaI(imgAux)
 
-    #cv2.pyrDown(imgAux,imgAux,dstsize=0.5)
+imgAux1=cv2.pyrDown(imgAux);
+pintaI(imgAux1)
+
+imgAux2=cv2.pyrDown(imgAux1);
+pintaI(imgAux2)
+
+imgAux3=cv2.pyrDown(imgAux2);
+pintaI(imgAux3)
+
+#concatenateDifSizes((imgAux,imgAux1,imgAux2,imgAux3))
+
+
+
+imgAux=cv2.pyrUp(imgAux3);
+pintaI(imgAux)
+
+imgAux=cv2.pyrUp(imgAux);
+pintaI(imgAux)
+
+imgAux=cv2.pyrUp(imgAux);
+pintaI(imgAux)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
