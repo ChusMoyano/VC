@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+% Esto es para que el LaTeX sepa que el texto está en español:
+\usepackage[spanish]{babel}
+% Este paquete para aprovechar al máximo las páginas
+\usepackage{fullpage}
+% Paquetes de la AMS:
+\usepackage{amsmath, amsthm, amsfonts}
+% Paquete para incluir gráficos
+\usepackage{graphicx}
+
+\usepackage[utf8]{inputenc}
+
+% Teoremas
+%--------------------------------------------------------------------------
+\newtheorem{thm}{Teorema}[section]
+\newtheorem{cor}[thm]{Corolario}
+\newtheorem{lem}[thm]{Lema}
+\newtheorem{prop}[thm]{Proposición}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definición}
+\newtheorem{ejem}{Ejemplo}
+\newtheorem{ejerc}{Ejercicio}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Observación}
+
+% Atajos.
+% Se pueden definir comandos nuevos para acortar cosas que se usan
+% frecuentemente. Como ejemplo, aquí se definen la R y la Z dobles que
+% suelen representar a los conjuntos de números reales y enteros.
+%--------------------------------------------------------------------------
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+% De la misma forma se pueden definir comandos con argumentos. Por
+% ejemplo, aquí definimos un comando para escribir el valor absoluto
+% de algo más fácilmente.
+%--------------------------------------------------------------------------
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+
+%--------------------------------------------------------------------------
+\title{Practica 0: Introducción a OpenCV \\}
+
+\author{Jesús Moyano Doña\\
+  \small Grupo 2 \\ 
+}
+
+\begin{document}
+\maketitle
+
+\section*{Ejercicio 1:}
+\noindent
+\textbf{Escribir una función que lea el fichero de una imagen y la muestre tanto en grises como en color ( im=leeimagen(filename,flagColor)).}  
+\\
+En este ejercicio tan solo he usado el la función \textit{imread} del paquete cv para leer la imagen. Dependiendo del numero que introduzcamos por parámetro en la variable flagColor, tomará la foto en blanco y negro si esta variable toma el valor 0 o a color si es 1.
+ 
+\section*{Ejercicio 2:}
+\noindent
+\textbf{Escribir una función que visualice una matriz de números reales cualquiera ya sea monobanda o tribanda (pintaI(im)).}  
+\\
+Para mostrar la imagen usamos la función \textit{imshow}. Para cerrar la imagen basta con clickear en imagen y pulsar cualquier tecla.
+
+\section*{Ejercicio 3:}
+\noindent
+\textbf{Escribir una función que visualice varias imágenes a la vez: pintaMI(vim). (vim será una secuencia de imágenes) ¿Qué pasa si las imágenes no son todas del mismo tipo: (nivel de gris, color, blanco-negro)?}  
+\\
+Para crear la secuencia de imágenes he cargado 2 imágenes y las he metido en un a lista, después he llamado a la función pintaMI para que muestre las imágenes de al lista, primero pinta una y a continuación la otra. Si las imágenes tienen distinto color no tiene ningún problema para representarlas.
+
+\section*{Ejercicio 4:}
+\noindent
+\textbf{Escribir una función que modifique el color en la imagen de cada uno de los elementos de una lista de coordenadas de píxeles. ( Recordar que (fila, columna) es lo contrario a (x,y). Es decir fila=y, columna=x).}  
+En este apartado he modificado el color de cada pixel, al color rojo le he sumado 20, al azul y verde les he restado 20 a ambos en cada coordenada.
+
+
+\section*{Ejercicio 5:}
+\noindent
+\textbf{Una función que sea capaz de representar varias imágenes con sus títulos en una misma ventana.}  
+\\
+Para este ejercicio he cogido una foto, he extraído su capa de gris para poder convertirlo en color rgb y asi poder hacer la concatenación con la foto a color, ya que la foto en blanco y negro es monobanda y tribanda la foto a color. Trás esto las he concatenado.
+
+\end{document}
