@@ -83,7 +83,7 @@ def ej1C():
     concatenate((imgOut3,imgOut4))
 
 
-
+asdf
 
 #ej2
 imgAux=np.copy(img)
