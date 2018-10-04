@@ -3,6 +3,26 @@ import numpy as np
 
 MAX_KERNEL_LENGTH=11
 
+
+def concatenateDifSizes(images):
+        height = sum(image.shape[0] for image in images)
+        width = max(image.shape[1] for image in images)
+        output = np.zeros((height,width,3))
+
+        y = 0
+        for image in images:
+            h,w,d = image.shape
+            output[y:y+h,0:w] = image
+            y += h
+
+        #cv2.imwrite("test.jpg", output)
+        return output
+
+
+def pintaMI(vim):
+    for n in vim:
+        pintaI(n)
+
 def concatenate(imagenes):
     conc=np.concatenate(imagenes,axis=1)
     pintaI(conc)
@@ -45,10 +65,10 @@ def ej1A():
     concatenate((img,img1,img2,img3))
 
 
-def ej1B(img):
+def ej1B(img,dx,dy): #%img imagen, dx,dy=valor de la derivada
     blur=cv2.blur(img,(5,5),1)
 
-    kx,ky=cv2.getDerivKernels(1,1,3,normalize=False)
+    kx,ky=cv2.getDerivKernels(dx,dy,3,normalize=False)
 
     imgSalida=cv2.sepFilter2D(blur,-1,kx,ky,delta=15)
     concatenate((img,imgSalida))
@@ -86,48 +106,60 @@ def ej2A():
 
 def ej2B():
     imgBordes=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=0)
-    blur=cv2.blur(imgBordes,(5,5),1)
-
-    kx,ky=cv2.getDerivKernels(1,0,3,normalize=False)
-
-    imgSalida=cv2.sepFilter2D(blur,-1,kx,ky,delta=10)
-
-    concatenate((imgBordes,imgSalida))
-
-
-
+    ej1B(imgBordes,0,1)
 
 
 def ej2C():
-    imgAux=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=cv2.BORDER_REFLECT)
-    pintaI(imgAux)
-
-    imgAux1=cv2.pyrDown(imgAux);
-    pintaI(imgAux1)
-
-    imgAux2=cv2.pyrDown(imgAux1);
-    pintaI(imgAux2)
-
-    imgAux3=cv2.pyrDown(imgAux2);
-    pintaI(imgAux3)
-
-    imgAux=cv2.pyrUp(imgAux3);
-    pintaI(imgAux)
-
-    imgAux=cv2.pyrUp(imgAux);
-    pintaI(imgAux)
-
-    imgAux=cv2.pyrUp(imgAux);
-    pintaI(imgAux)
+    imgBordes=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=0)
+    ej1B(imgBordes,2,0)
 
 
+def ej2D():
+    img=leeimagen("data/cat.bmp",0)
+
+    imgN=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=4)
+    #pintaI(imgN)
+
+    imgPD1=cv2.pyrDown(imgN);
+    #pintaI(imgPD1)
+
+    imgPD2=cv2.pyrDown(imgPD1);
+    #pintaI(imgPD2)
+
+    imgPD3=cv2.pyrDown(imgPD2);
+    #pintaI(imgPD3)
+
+    imgPU1=cv2.pyrUp(imgPD3);
+    #pintaI(imgPU1)
+
+    imgPU2=cv2.pyrUp(imgPU1);
+    #pintaI(imgPU2)
+
+    imgPU3=cv2.pyrUp(imgPU2);
+    #pintaI(imgPU3)
 
 
 
+    images=(imgN,imgPD1,imgPD2,imgPD3,imgPD3,imgPU1,imgPU2,imgPU3)
+    pintaMI(images)
 
 
 
+    """
+    o1=concatenateDifSizes(images1)
+    o2=concatenateDifSizes(images2)
 
+    cv2.imwrite("o1.jpg", o1)
+    cv2.imwrite("o2.jpg", o2)
+
+    o1=leeimagen("o1.jpg",1)
+    o2=leeimagen("o2.jpg",1)
+
+    pintaI(o1)
+    pintaI(o2)
+    """
+
+ej2D()
 
 
 
