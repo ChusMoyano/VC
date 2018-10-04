@@ -1,4 +1,4 @@
-0i,mport cv2
+import cv2
 import numpy as np
 
 MAX_KERNEL_LENGTH=11
@@ -58,19 +58,18 @@ img=leeimagen("data/cat.bmp",1)
 
 def convolucion(im,k,sig):
     iC=cv2.GaussianBlur(im, (k , k), sig)
-    pintaI(iC)
+    #pintaI(iC)
     return iC
 
 def ej1A():
-    img0=convolucion(img,5,0)
     img1=convolucion(img,5,1)
     img2=convolucion(img,5,2)
     img3=convolucion(img,5,3)
 
-    concatenate((img0,img1,img2,img3))
+    concatenate((img,img1,img2,img3))
 
 
-def ej1B():
+def ej1B(img):
     blur=cv2.blur(img,(5,5),1)
 
     kx,ky=cv2.getDerivKernels(1,1,3,normalize=False)
@@ -103,6 +102,27 @@ def ej1C():
 
 
 #ej2
+def ej2A():
+    imgBordes=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=cv2.BORDER_REFLECT)
+    imgConv=convolucion(imgBordes,7,2)
+    concatenate((imgBordes,imgConv))
+
+
+def ej2B():
+    imgBordes=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=0)
+
+    blur=cv2.blur(imgBordes,(5,5),1)
+
+    kx,ky=cv2.getDerivKernels(1,0,3,normalize=False)
+
+    imgSalida=cv2.sepFilter2D(blur,-1,kx,ky,delta=10)
+
+    concatenate((imgBordes,imgSalida))
+
+
+ej2B()
+
+
 def piramide():
     imgAux=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=cv2.BORDER_REFLECT)
     pintaI(imgAux)
