@@ -1,4 +1,4 @@
-import cv2
+0i,mport cv2
 import numpy as np
 
 MAX_KERNEL_LENGTH=11
@@ -103,31 +103,31 @@ def ej1C():
 
 
 #ej2
+def piramide():
+    imgAux=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=cv2.BORDER_REFLECT)
+    pintaI(imgAux)
 
-imgAux=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=cv2.BORDER_REFLECT)
-pintaI(imgAux)
+    imgAux1=cv2.pyrDown(imgAux);
+    pintaI(imgAux1)
 
-imgAux1=cv2.pyrDown(imgAux);
-pintaI(imgAux1)
+    imgAux2=cv2.pyrDown(imgAux1);
+    pintaI(imgAux2)
 
-imgAux2=cv2.pyrDown(imgAux1);
-pintaI(imgAux2)
+    imgAux3=cv2.pyrDown(imgAux2);
+    pintaI(imgAux3)
 
-imgAux3=cv2.pyrDown(imgAux2);
-pintaI(imgAux3)
-
-#concatenateDifSizes((imgAux,imgAux1,imgAux2,imgAux3))
+    #concatenateDifSizes((imgAux,imgAux1,imgAux2,imgAux3))
 
 
 
-imgAux=cv2.pyrUp(imgAux3);
-pintaI(imgAux)
+    imgAux=cv2.pyrUp(imgAux3);
+    pintaI(imgAux)
 
-imgAux=cv2.pyrUp(imgAux);
-pintaI(imgAux)
+    imgAux=cv2.pyrUp(imgAux);
+    pintaI(imgAux)
 
-imgAux=cv2.pyrUp(imgAux);
-pintaI(imgAux)
+    imgAux=cv2.pyrUp(imgAux);
+    pintaI(imgAux)
 
 
 
