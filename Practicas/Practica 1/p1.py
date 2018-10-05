@@ -46,9 +46,6 @@ def pintaI(i):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-#Gato
-img=leeimagen("data/cat.bmp",1)
-
 #Ejercicio 1
 #apartado a
 
@@ -65,13 +62,11 @@ def ej1A():
     concatenate((img,img1,img2,img3))
 
 
-def ej1B(img,dx,dy): #%img imagen, dx,dy=valor de la derivada
-    blur=cv2.blur(img,(5,5),1)
-
+def ej1B(dx,dy): #%img imagen, dx,dy=valor de la derivada
     kx,ky=cv2.getDerivKernels(dx,dy,3,normalize=False)
 
-    imgSalida=cv2.sepFilter2D(blur,-1,kx,ky,delta=15)
-    concatenate((img,imgSalida))
+    print("Kernel X: ", kx ,"  Kernel Y: ", ky)
+
 
 
 
@@ -98,52 +93,34 @@ def ej1C():
 
 
 #ej2
-def ej2A():
+def ej2A(img,kx,ky):
     imgBordes=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=cv2.BORDER_REFLECT)
-    imgConv=convolucion(imgBordes,7,2)
+    imgConv=cv2.sepFilter2D(imgBordes,-1,kx,ky,delta=100)
     concatenate((imgBordes,imgConv))
 
 
-def ej2B():
-    imgBordes=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=0)
-    ej1B(imgBordes,0,1)
+def ej2BC(img,dx,dy):
+    img=convolucion(img,3,1)
+    kx,ky=cv2.getDerivKernels(dx,dy,3,normalize=False)
+    ej2A(img,kx,ky)
 
-
-def ej2C():
-    imgBordes=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=0)
-    ej1B(imgBordes,2,0)
 
 
 def ej2D():
     img=leeimagen("data/cat.bmp",0)
 
     imgN=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=4)
-    #pintaI(imgN)
 
     imgPD1=cv2.pyrDown(imgN);
-    #pintaI(imgPD1)
-
     imgPD2=cv2.pyrDown(imgPD1);
-    #pintaI(imgPD2)
-
     imgPD3=cv2.pyrDown(imgPD2);
-    #pintaI(imgPD3)
 
     imgPU1=cv2.pyrUp(imgPD3);
-    #pintaI(imgPU1)
-
     imgPU2=cv2.pyrUp(imgPU1);
-    #pintaI(imgPU2)
-
     imgPU3=cv2.pyrUp(imgPU2);
-    #pintaI(imgPU3)
-
-
 
     images=(imgN,imgPD1,imgPD2,imgPD3,imgPD3,imgPU1,imgPU2,imgPU3)
     pintaMI(images)
-
-
 
     """
     o1=concatenateDifSizes(images1)
@@ -159,10 +136,12 @@ def ej2D():
     pintaI(o2)
     """
 
-ej2D()
 
 
 
+def main():
+    img=leeimagen("data/cat.bmp",0)
+    ej2BC(img,0,2)
 
 
-#
+main()
