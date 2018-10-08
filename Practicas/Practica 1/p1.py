@@ -106,7 +106,7 @@ def ej2BC(img,dx,dy):
 
 
 
-def ej2D(img):
+def ej2DE(img):
     img=leeimagen("data/cat.bmp",0)
 
     imgN=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=4)
@@ -115,12 +115,13 @@ def ej2D(img):
     imgPD2=cv2.pyrDown(imgPD1);
     imgPD3=cv2.pyrDown(imgPD2);
 
+
+    #pintar las 3 imagenes para la gausiana apartado D
+
     imgPU1=cv2.pyrUp(imgPD3);
     imgPU2=cv2.pyrUp(imgPU1);
     imgPU3=cv2.pyrUp(imgPU2);
 
-    #images=(imgN,imgPD1,imgPD2,imgPD3,imgPD3,imgPU1,imgPU2,imgPU3)
-    #pintaMI(images)
     print(imgN.shape[0])
     imgN= cv2.resize(imgN,(imgPU3.shape[1],imgPU3.shape[0]))
 
@@ -147,7 +148,7 @@ def ej2D(img):
 
 def main():
     img=leeimagen("data/cat.bmp",0)
-    ej2D(img)
+    ej2DE(img)
 
 
 main()
