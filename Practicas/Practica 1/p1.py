@@ -4,20 +4,21 @@ import numpy as np
 MAX_KERNEL_LENGTH=11
 
 
+
+
 def concatenateDifSizes(images):
-        height = sum(image.shape[0] for image in images)
-        width = max(image.shape[1] for image in images)
-        output = np.zeros((height,width,3))
+    height = max(image.shape[0] for image in images)
+    width = sum(image.shape[1] for image in images)
+    output=np.zeros((height,width))
 
-        y = 0
-        for image in images:
-            h,w,d = image.shape
-            output[y:y+h,0:w] = image
-            y += h
+    x=0
 
-        #cv2.imwrite("test.jpg", output)
-        return output
+    for i in images:
+        h,w=i.shape
+        output[:h,x:x+w,]=i
+        x+=w
 
+    return output
 
 def pintaMI(vim):
     for n in vim:
@@ -106,7 +107,7 @@ def ej2BC(img,dx,dy):
 
 
 
-def ej2DE(img):
+def ej2D(img):
     img=leeimagen("data/cat.bmp",0)
 
     imgN=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=4)
@@ -115,10 +116,15 @@ def ej2DE(img):
     imgPD2=cv2.pyrDown(imgPD1);
     imgPD3=cv2.pyrDown(imgPD2);
 
+    o1=concatenateDifSizes((imgN,imgPD1,imgPD2,imgPD3))
+    cv2.imwrite("o1.jpg", o1)
+    o1=leeimagen("o1.jpg",1)
+    pintaI(o1)
 
-    #pintar las 3 imagenes para la gausiana apartado D
+    return imgN,imgPD3
 
-    imgPU1=cv2.pyrUp(imgPD3);
+def ej2E(imgN,imgPD):
+    imgPU1=cv2.pyrUp(imgPD);
     imgPU2=cv2.pyrUp(imgPU1);
     imgPU3=cv2.pyrUp(imgPU2);
 
@@ -129,26 +135,17 @@ def ej2DE(img):
     pintaI(laplace)
 
 
-    """
-    o1=concatenateDifSizes(images1)
-    o2=concatenateDifSizes(images2)
 
-    cv2.imwrite("o1.jpg", o1)
-    cv2.imwrite("o2.jpg", o2)
 
-    o1=leeimagen("o1.jpg",1)
-    o2=leeimagen("o2.jpg",1)
 
-    pintaI(o1)
-    pintaI(o2)
-    """
+
 
 
 
 
 def main():
     img=leeimagen("data/cat.bmp",0)
-    ej2DE(img)
-
+    i,p=ej2D(img)
+    ej2E(i,p)
 
 main()
