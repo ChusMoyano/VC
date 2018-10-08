@@ -106,7 +106,7 @@ def ej2BC(img,dx,dy):
 
 
 
-def ej2D():
+def ej2D(img):
     img=leeimagen("data/cat.bmp",0)
 
     imgN=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=4)
@@ -119,8 +119,14 @@ def ej2D():
     imgPU2=cv2.pyrUp(imgPU1);
     imgPU3=cv2.pyrUp(imgPU2);
 
-    images=(imgN,imgPD1,imgPD2,imgPD3,imgPD3,imgPU1,imgPU2,imgPU3)
-    pintaMI(images)
+    #images=(imgN,imgPD1,imgPD2,imgPD3,imgPD3,imgPU1,imgPU2,imgPU3)
+    #pintaMI(images)
+    print(imgN.shape[0])
+    imgN= cv2.resize(imgN,(imgPU3.shape[1],imgPU3.shape[0]))
+
+    laplace=cv2.subtract(imgN,imgPU3)
+    pintaI(laplace)
+
 
     """
     o1=concatenateDifSizes(images1)
@@ -141,7 +147,7 @@ def ej2D():
 
 def main():
     img=leeimagen("data/cat.bmp",0)
-    ej2BC(img,0,2)
+    ej2D(img)
 
 
 main()
