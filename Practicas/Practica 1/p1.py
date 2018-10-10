@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
 
 MAX_KERNEL_LENGTH=11
 
@@ -55,14 +54,14 @@ def pintaI(i):
 #apartado a
 
 def convolucion(im,k,sig):
-    iC=cv2.GaussianBlur(im, (k , k), sig)
+    iC = cv2.GaussianBlur(im, (k , k), sig)
     #pintaI(iC)
     return iC
 
 def ej1A(img):
-    img1=convolucion(img,5,1)
-    img2=convolucion(img,5,2)
-    img3=convolucion(img,5,3)
+    img1 = convolucion(img,5,1)
+    img2 = convolucion(img,5,2)
+    img3 = convolucion(img,5,3)
 
     concatenate((img,img1,img2,img3))
 
@@ -79,8 +78,6 @@ def ej1B(img): #%img imagen, dx,dy=valor de la derivada
     img2=cv2.sepFilter2D(img,-1,kx1,ky1,delta=100)
 
     concatenate((img1,img2))
-
-
 
 
 
@@ -129,9 +126,9 @@ def ej2D(img):
 
     imgN=cv2.copyMakeBorder(src=img,top=15,bottom=15,left=15,right=15,borderType=4)
 
-    imgPD1=cv2.pyrDown(imgN);
-    imgPD2=cv2.pyrDown(imgPD1);
-    imgPD3=cv2.pyrDown(imgPD2);
+    imgPD1=cv2.pyrDown(imgN)
+    imgPD2=cv2.pyrDown(imgPD1)
+    imgPD3=cv2.pyrDown(imgPD2)
 
     i=concatenateDifSizes((imgN,imgPD1,imgPD2,imgPD3),0)
     pintaI(i)
@@ -139,9 +136,9 @@ def ej2D(img):
     return imgN,imgPD3
 
 def ej2E(imgN,imgPD):
-    imgPU1=cv2.pyrUp(imgPD);
-    imgPU2=cv2.pyrUp(imgPU1);
-    imgPU3=cv2.pyrUp(imgPU2);
+    imgPU1=cv2.pyrUp(imgPD)
+    imgPU2=cv2.pyrUp(imgPU1)
+    imgPU3=cv2.pyrUp(imgPU2)
 
     delta=40
 
