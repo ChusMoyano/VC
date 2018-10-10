@@ -1,15 +1,18 @@
 import cv2
 import numpy as np
+from matplotlib import pyplot as plt
 
 MAX_KERNEL_LENGTH=11
 
 
 
 
-def concatenateDifSizes(images):
+def concatenateDifSizes(images,p):
     height = max(image.shape[0] for image in images)
     width = sum(image.shape[1] for image in images)
     output=np.zeros((height,width))
+    if(p==1):
+        output=output+255
 
     x=0
 
@@ -18,6 +21,7 @@ def concatenateDifSizes(images):
         output[:h,x:x+w,]=i
         x+=w
 
+    output=np.array(output,float)/float(255)
     return output
 
 def pintaMI(vim):
@@ -55,7 +59,7 @@ def convolucion(im,k,sig):
     #pintaI(iC)
     return iC
 
-def ej1A():
+def ej1A(img):
     img1=convolucion(img,5,1)
     img2=convolucion(img,5,2)
     img3=convolucion(img,5,3)
@@ -63,25 +67,36 @@ def ej1A():
     concatenate((img,img1,img2,img3))
 
 
-def ej1B(dx,dy): #%img imagen, dx,dy=valor de la derivada
-    kx,ky=cv2.getDerivKernels(dx,dy,3,normalize=False)
+def ej1B(img): #%img imagen, dx,dy=valor de la derivada
 
-    print("Kernel X: ", kx ,"  Kernel Y: ", ky)
+    ksize=3
+
+    kx0,ky0=cv2.getDerivKernels(1,0,ksize,normalize=False)
+    kx1,ky1=cv2.getDerivKernels(0,1,ksize,normalize=False)
+
+
+    img1=cv2.sepFilter2D(img,-1,kx0,ky0,delta=100)
+    img2=cv2.sepFilter2D(img,-1,kx1,ky1,delta=100)
+
+    concatenate((img1,img2))
 
 
 
 
-def ej1C():
+
+def ej1C(img):
     deltaParam=50
 
     img1=cv2.copyMakeBorder(src=img,top=10,bottom=10,left=10,right=10,borderType=1)
     img2=cv2.copyMakeBorder(src=img,top=10,bottom=10,left=10,right=10,borderType=4)
 
-    blur11=cv2.blur(img1,(3,3),1)
-    blur12=cv2.blur(img2,(3,3),1)
+    simga1=1
+    simga3=3
+    blur11=cv2.blur(img1,(5,5),simga1)
+    blur12=cv2.blur(img2,(5,5),simga1)
 
-    blur31=cv2.blur(img1,(3,3),3)
-    blur32=cv2.blur(img2,(3,3),3)
+    blur31=cv2.blur(img1,(5,5),simga3)
+    blur32=cv2.blur(img2,(5,5),simga3)
 
     imgOut1=cv2.Laplacian(blur11,ksize=3,ddepth=0,delta=deltaParam)
     imgOut2=cv2.Laplacian(blur12,ksize=3,ddepth=0,delta=deltaParam)
@@ -107,6 +122,8 @@ def ej2BC(img,dx,dy):
 
 
 
+
+
 def ej2D(img):
     img=leeimagen("data/cat.bmp",0)
 
@@ -116,10 +133,8 @@ def ej2D(img):
     imgPD2=cv2.pyrDown(imgPD1);
     imgPD3=cv2.pyrDown(imgPD2);
 
-    o1=concatenateDifSizes((imgN,imgPD1,imgPD2,imgPD3))
-    cv2.imwrite("o1.jpg", o1)
-    o1=leeimagen("o1.jpg",1)
-    pintaI(o1)
+    i=concatenateDifSizes((imgN,imgPD1,imgPD2,imgPD3),0)
+    pintaI(i)
 
     return imgN,imgPD3
 
@@ -128,13 +143,22 @@ def ej2E(imgN,imgPD):
     imgPU2=cv2.pyrUp(imgPU1);
     imgPU3=cv2.pyrUp(imgPU2);
 
-    print(imgN.shape[0])
+    delta=40
+
+    imgN= cv2.resize(imgN,(imgPU1.shape[1],imgPU1.shape[0]))
+    laplace1=cv2.subtract(imgN,imgPU1)
+    laplace1=cv2.add(laplace1,delta)
+
+    imgN= cv2.resize(imgN,(imgPU2.shape[1],imgPU2.shape[0]))
+    laplace2=cv2.subtract(imgN,imgPU2)
+    laplace2=cv2.add(laplace2,delta)
+
     imgN= cv2.resize(imgN,(imgPU3.shape[1],imgPU3.shape[0]))
+    laplace3=cv2.subtract(imgN,imgPU3)
+    laplace3=cv2.add(laplace3,delta)
 
-    laplace=cv2.subtract(imgN,imgPU3)
-    pintaI(laplace)
-
-
+    i=concatenateDifSizes((imgPD,laplace1,laplace2,laplace3),1)
+    pintaI(i)
 
 
 
@@ -145,7 +169,31 @@ def ej2E(imgN,imgPD):
 
 def main():
     img=leeimagen("data/cat.bmp",0)
-    i,p=ej2D(img)
-    ej2E(i,p)
+    """
+
+    print("Ejercico 1A")
+    ej1A(img)
+
+    print("Ejercico 1B")
+    ej1B(img)
+
+    print("Ejercico 1C")
+    ej1C(img)
+
+    print("Ejercico 2A")
+    kx,ky=cv2.getDerivKernels(1,0,3,normalize=False)
+    ej2A(img,kx,ky)
+
+    print("Ejercico 2B")
+    ej2BC(img,1,1)
+
+    print("Ejercico 2C")
+    ej2BC(img,2,2)
+    """
+    print("Ejercico 2D")
+    imgB,imgP=ej2D(img)
+
+    print("Ejercico 2E")
+    ej2E(imgB,imgP)
 
 main()
